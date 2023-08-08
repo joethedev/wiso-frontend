@@ -11,11 +11,13 @@ function App() {
       console.log(res.data)
     })
 
-    
+
     .catch(err => console.log(err))
   },[])
   return (
-   <div>{todo.from}
+   <div>
+    <h1>this is a test</h1>
+    {todo.from}
    </div>
   );
 }
