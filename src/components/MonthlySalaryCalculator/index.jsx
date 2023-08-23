@@ -1,45 +1,43 @@
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { Button, Container, Stack, Form } from "react-bootstrap";
 
 const MonthlySalaryCalculator = () => {
-  const [annual, setAnnual] = useState("");
+  const [message, setMessage] = useState("");
   const [result, setResult] = useState("");
-  const [select, setSelect] = useState("");
+
 
   const annualRef = useRef();
   const salaryType = useRef();
 
-  const handleSelectChange = () => {
-    setSelect(salaryType.current.value);
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setAnnual(annualRef.current.value);
-  };
+  const handleSubmit = () => {
 
-  useEffect(() => {
-    let salType = ""
+    const annualVal = annualRef.current.value
+   
+    let salType = salaryType.current.value === "Brut" ?  "gross" : "net"
 
-    select === "Brut" ? salType = "gross" : salType = "net"
-
-    if (annual) {
+    if (annualVal > 999999) {
+      setMessage("Sauf si vous êtes Mbappé, votre salaire ne doit pas dépasser 999 999,0 €")
+    }else if (annualVal) {
+      setMessage("")
       axios
-        .get(`http://localhost:8080/salary/${salType}/${annual}`)
+        .get(`http://localhost:8080/salary/${salType}/${annualVal}`)
         .then((res) => {
           setResult(res.data);
         })
 
         .catch((err) => console.log(err));
     }
-  }, [annual]);
+  };
+
+  
   return (
     <div>
       <Container className="mt-4 bg-light pt-3 pb-3" fluid="sm">
         <h3>Calculer le salaire mensuel:</h3>
 
-        <Form onClick={handleSubmit}>
+        <Form>
           <Form.Group controlId="annual">
             <Form.Control
               placeholder="Veuillez saisir le salaire annuel"
@@ -47,20 +45,21 @@ const MonthlySalaryCalculator = () => {
               type="number"
               required
             />
+            <p style={{fontSize: 10 + "px", color: "red"}}>{message}</p>
           </Form.Group>
           <Stack direction="horizontal" className="mt-3" gap="2">
-            <Form.Select onChange={handleSelectChange} ref={salaryType}>
+            <Form.Select ref={salaryType}>
               <option hidden={true}>Brut/Net</option>
               <option>Brut</option>
               <option>Net</option>
             </Form.Select>
-            <Button>Calculer</Button>
+            <Button onClick={handleSubmit}>Calculer</Button>
           </Stack>
         </Form>
 
         {result.monthlySalary ? (
           <p className="mt-3">
-            Votre salaire mensuel {select} est:{" "}
+           Votre salaire mensuel {salaryType.current.value} est:{" "}
             <strong>{result.monthlySalary}</strong>
           </p>
         ) : (
