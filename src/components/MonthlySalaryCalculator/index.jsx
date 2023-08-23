@@ -1,28 +1,32 @@
 import axios from "axios";
 import { useState, useRef } from "react";
 import { Button, Container, Stack, Form } from "react-bootstrap";
+import serverPath from "../../utils/CONSTs"
+
 
 const MonthlySalaryCalculator = () => {
   const [message, setMessage] = useState("");
   const [result, setResult] = useState("");
 
+  const SERVER_PATH = serverPath()
+
 
   const annualRef = useRef();
-  const salaryType = useRef();
+  const salaryRef = useRef();
 
 
   const handleSubmit = () => {
 
-    const annualVal = annualRef.current.value
+    const annualValue = annualRef.current.value
    
-    let salType = salaryType.current.value === "Brut" ?  "gross" : "net"
+    let salaryType = salaryRef.current.value === "Brut" ?  "gross" : "net"
 
-    if (annualVal > 999999) {
+    if (annualValue > 999999) {
       setMessage("Sauf si vous êtes Mbappé, votre salaire ne doit pas dépasser 999 999,0 €")
-    }else if (annualVal) {
+    }else if (annualValue) {
       setMessage("")
       axios
-        .get(`http://localhost:8080/salary/${salType}/${annualVal}`)
+        .get(`${SERVER_PATH}salary/${salaryType}/${annualValue}`)
         .then((res) => {
           setResult(res.data);
         })
@@ -48,7 +52,7 @@ const MonthlySalaryCalculator = () => {
             <p style={{fontSize: 10 + "px", color: "red"}}>{message}</p>
           </Form.Group>
           <Stack direction="horizontal" className="mt-3" gap="2">
-            <Form.Select ref={salaryType}>
+            <Form.Select ref={salaryRef}>
               <option hidden={true}>Brut/Net</option>
               <option>Brut</option>
               <option>Net</option>
@@ -59,8 +63,8 @@ const MonthlySalaryCalculator = () => {
 
         {result.monthlySalary ? (
           <p className="mt-3">
-           Votre salaire mensuel {salaryType.current.value} est:{" "}
-            <strong>{result.monthlySalary}</strong>
+           Votre salaire mensuel {salaryRef.current.value} est:{" "}
+            <strong>{result.monthlySalary}€</strong>
           </p>
         ) : (
           ""
