@@ -1,3 +1,1 @@
-export default function serverPath() {
-  return "http://localhost:8080/"
-}
+export const SERVER_PATH =  "http://localhost:8080/"
