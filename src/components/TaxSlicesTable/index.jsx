@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useState, useRef, useEffect } from "react";
-import { Button, Container, Stack, Form, Table } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Container, Table } from "react-bootstrap";
 
 const TaxSlicesTable = () => {
   const [slices, setSlices] = useState([]);
@@ -17,9 +17,9 @@ const TaxSlicesTable = () => {
         .catch((err) => console.log(err));
   }, []);
   return (
-    <Container className="mt-4 bg-light pt-3 pb-3" fluid="sm">
+    <Container className="mt-4 bg-light pt-3 pb-3" fluid>
       <h3>Hello</h3>
-      <Table striped bordered hover variant="light">
+      <Table striped bordered hover variant="light" size="xl">
         <thead>
           <tr>
             <th>#</th>
