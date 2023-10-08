@@ -4,6 +4,7 @@ import NavigationBar from "./components/NavigationBar";
 import MonthlySalaryCalculator from "./components/MonthlySalaryCalculator";
 import TaxSlicesTable from "./components/TaxSlicesTable";
 import SideBar from "./components/SideBar";
+import AddNewSlice from "./components/AddNewSlice";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/calculate" element={<MonthlySalaryCalculator />} />
           <Route path="/tax-slices" element={<TaxSlicesTable />} />
-          <Route path="/add" element={<Home />} />
+          <Route path="/add" element={<AddNewSlice />} />
         </Routes>
       </div>
     </>
